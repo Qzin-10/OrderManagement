@@ -3,12 +3,12 @@ name: ci
 on:
   push:
     branches:
-      - main         # Trigger on push to the 'main' branch
+      - master       # Trigger on push to the 'master' branch
       - feature/*    # Trigger on push to any branch starting with 'feature/'
   pull_request:
     branches:
-      - main         # Trigger on PR targeting the 'main' branch
-      - feature/*    # Trigger on PR to 'main' from 'feature/*' branches
+      - master       # Trigger on PR targeting the 'master' branch
+      - feature/*    # Trigger on PR to 'master' from 'feature/*' branches
 
 jobs:
   build:
@@ -19,17 +19,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Pull the latest changes (to ensure we have the latest updates)
-      - name: Pull latest changes
-        run: git pull origin ${{ github.ref }}
+      # Step 2: Pull the latest changes from the 'master' branch
+      - name: Pull latest changes from master
+        run: git pull origin master
 
-      # Step 3:Push changes to feature branch
+      # Step 3: Push changes to the feature branch
       - name: Push changes to repository
         run: |
           git config --global user.email "jakkasrishanthreddy.com"
           git config --global user.name "Qzin-10"
           git add .
-          git commit -m "Update after build"
+          git commit -m "Update after build" || echo "No changes to commit"
           git push origin ${{ github.ref }}
         env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Use GitHub token for authentication
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Auto-generated GitHub token
