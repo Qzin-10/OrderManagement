@@ -26,8 +26,8 @@ jobs:
       # Step 3: Push changes back to the repository (if needed)
       - name: Push changes to repository
         run: |
-          git config --global user.email "youremail@example.com"
-          git config --global user.name "Your Name"
+          git config --global user.email "jakkasrishanthreddy.com"
+          git config --global user.name "Qzin-10"
           git add .
           git commit -m "Update after build"
           git push origin ${{ github.ref }}
