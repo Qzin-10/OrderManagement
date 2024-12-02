@@ -3,36 +3,30 @@ name: ci
 on:
   push:
     branches:
-      - master       # Trigger on push to the 'master' branch
-      - feature/*    # Trigger on push to any branch starting with 'feature/'
+      - master       # Only trigger on push to 'master'
   pull_request:
     branches:
-      - master       # Trigger on PR targeting the 'master' branch
-      - feature/*    # Trigger on PR to 'master' from 'feature/*' branches
+      - master       # Only trigger PRs targeting 'master'
 
 jobs:
   build:
     runs-on: ubuntu-latest  # Run on the latest Ubuntu environment
 
     steps:
-      # Step 1: Checkout code from the repository
-      - name: Checkout repository
+      # Step 1: Checkout code from the 'master' branch
+      - name: Checkout code
         run: |
           git clone https://github.com/${{ github.repository }} .
           git fetch --all
-          git checkout ${{ github.ref }}
+          git checkout master
 
-      # Step 2: Pull the latest changes from the 'master' branch
-      - name: Pull latest changes from master
-        run: git pull origin master
-
-      # Step 3: Push changes to the feature branch
+      # Step 2: Push changes back to 'master' (if needed)
       - name: Push changes to repository
         run: |
           git config --global user.email "jakkasrishanthreddy.com"
           git config --global user.name "Qzin-10"
           git add .
           git commit -m "Update after build" || echo "No changes to commit"
-          git push origin ${{ github.ref }}
+          git push origin master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Auto-generated GitHub token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
