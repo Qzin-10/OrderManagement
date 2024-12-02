@@ -10,6 +10,6 @@ public class QzinApplication {
 		SpringApplication.run(QzinApplication.class, args);
 
 
-	System.out.println("System check dev time");}
+	System.out.println("System check devv time");}
 
 }
