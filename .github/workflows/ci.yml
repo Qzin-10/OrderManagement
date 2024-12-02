@@ -3,39 +3,38 @@ name: ci
 on:
   push:
     branches:
-      - master       # Only trigger on push to 'master'
+      - master       # Trigger the workflow on push to 'master'
   pull_request:
     branches:
-      - master       # Only trigger PRs targeting 'master'
+      - master       # Trigger the workflow on pull request targeting 'master'
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Run on the latest Ubuntu environment
+    runs-on: ubuntu-latest  # Use the latest Ubuntu environment for the job
 
     steps:
-      # Step 1: Checkout code from the 'master' branch
+      # Step 1: Checkout the code from the 'master' branch
       - name: Checkout code
-        run: |
-          git clone https://github.com/${{ github.repository }} .
-          git fetch --all
-          git checkout master
+        uses: actions/checkout@v3
+        with:
+          ref: master  # Ensure we checkout the 'master' branch
 
-      # Step 2: Push changes back to 'master' (if needed)
+      # Step 2: Configure Git user
       - name: Configure Git User
         run: |
-            git config --global user.email "bot@qzin10.com"
-            git config --global user.name "Qzin-10 Bot"
+          git config --global user.email "jakkasrishanthreddy@gmail.com"
+          git config --global user.name "Qzin-10"
 
-      # Step 3: Make some changes (optional)
+      # Step 3: Make some changes (if applicable)
       - name: Make changes to repository
         run: |
-                echo "Changes made by CI/CD" >> changes.txt
-                git add .
-                git commit -m "Update after build" || echo "No changes to commit"
+          echo "Changes made by CI/CD" >> changes.txt
+          git add .
+          git commit -m "Update after build" || echo "No changes to commit"
 
-        # Step 4: Push changes to the repository
+      # Step 4: Push changes to the master branch
       - name: Push changes to master branch
         run: |
-                git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
-              env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
