@@ -4,21 +4,23 @@ on:
   push:
     branches:
       - master       # Trigger the workflow on push to 'master'
+      - feature/*    # Trigger the workflow on push to 'feature/*' branches
   pull_request:
     branches:
       - master       # Trigger the workflow on pull request targeting 'master'
+      - feature/*    # Trigger the workflow on pull request targeting 'feature/*'
 
 jobs:
   build:
     runs-on: ubuntu-latest  # Use the latest Ubuntu environment for the job
 
     steps:
-      # Step 1: Checkout the code from the 'master' branch
+      # Step 1: Clone the repository and checkout the branch that triggered the workflow
       - name: Checkout code
         run: |
           git clone https://github.com/${{ github.repository }} .
           git fetch --all
-          git checkout master
+          git checkout ${{ github.ref_name }}  # Checkout the branch that triggered the workflow
 
       # Step 2: Configure Git user
       - name: Configure Git User
@@ -33,9 +35,9 @@ jobs:
           git add .
           git commit -m "Update after build" || echo "No changes to commit"
 
-      # Step 4: Push changes to the master branch
-      - name: Push changes to master branch
+      # Step 4: Push changes back to the branch that triggered the workflow
+      - name: Push changes to the branch
         run: |
-          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:master
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }} HEAD:${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
