@@ -8,6 +8,8 @@ public class QzinApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(QzinApplication.class, args);
-	}
+
+
+	System.out.println("System check");}
 
 }
