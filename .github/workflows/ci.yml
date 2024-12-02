@@ -1,12 +1,14 @@
-name: Spring Boot CI
+name: ci
 
 on:
   push:
     branches:
-      - main  # Trigger on push to the 'main' branch
+      - main         # Trigger on push to the 'main' branch
+      - feature/*    # Trigger on push to any branch starting with 'feature/'
   pull_request:
     branches:
-      - main  # Trigger on PR targeting the 'main' branch
+      - main         # Trigger on PR targeting the 'main' branch
+      - feature/*    # Trigger on PR to 'main' from 'feature/*' branches
 
 jobs:
   build:
@@ -17,43 +19,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Set up JDK 17
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'  # Specify the Java version
-          distribution: 'adoptopenjdk'  # Use AdoptOpenJDK as the distribution
-          cache: 'maven'  # Optional: enables caching for Maven dependencies
-
-      # Step 3: Set up Maven (optional, but specified version can help with consistency)
-      - name: Set up Maven
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          maven-version: '3.8.1'  # Optional: specify Maven version
-
-      # Step 4: Build and Test the project with Maven (or Gradle)
-      - name: Build and Test with Maven
-        run: mvn clean install  # Run build and tests (skip tests if needed with '-DskipTests')
-
-      # Step 5: Pull the latest changes (if needed)
+      # Step 2: Pull the latest changes (to ensure we have the latest updates)
       - name: Pull latest changes
-        run: git pull origin main
+        run: git pull origin ${{ github.ref }}
 
-      # Step 6: Push changes (if applicable)
+      # Step 3: Push changes back to the repository (if needed)
       - name: Push changes to repository
         run: |
           git config --global user.email "youremail@example.com"
           git config --global user.name "Your Name"
           git add .
           git commit -m "Update after build"
-          git push origin main
+          git push origin ${{ github.ref }}
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}  # Use GitHub token for authentication
-
-      # Step 7: (Optional) Run Spring Boot Application (if applicable)
-      - name: Run Spring Boot Application
-        run: |
-          mvn spring-boot:run &
-          echo "Spring Boot Application is running"
-        continue-on-error: true  # Optional: allows the workflow to continue even if this step fails
