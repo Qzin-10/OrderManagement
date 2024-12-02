@@ -10,6 +10,6 @@ public class QzinApplication {
 		SpringApplication.run(QzinApplication.class, args);
 
 
-	System.out.println("System check third time");}
+	System.out.println("System check fouth time");}
 
 }
