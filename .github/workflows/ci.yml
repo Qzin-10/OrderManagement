@@ -15,9 +15,10 @@ jobs:
     steps:
       # Step 1: Checkout the code from the 'master' branch
       - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          ref: master  # Ensure we checkout the 'master' branch
+        run: |
+          git clone https://github.com/${{ github.repository }} .
+          git fetch --all
+          git checkout master
 
       # Step 2: Configure Git user
       - name: Configure Git User
