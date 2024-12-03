@@ -1,15 +1,16 @@
 package com.Qzin;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@Slf4j
 public class QzinApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(QzinApplication.class, args);
-
-
-	System.out.println("System check devv time");}
+		log.info("--------- Starting Qzin Order Management Service ---------");
+	}
 
 }

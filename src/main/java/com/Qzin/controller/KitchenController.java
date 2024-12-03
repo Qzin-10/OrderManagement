@@ -12,12 +12,8 @@ import java.util.List;
 @RequestMapping("/api/kitchens")
 public class KitchenController {
 
-  @Autowired
+    @Autowired
     KitchenService kitchenService;
-
-    public KitchenController(KitchenService kitchenService) {
-        this.kitchenService = kitchenService;
-    }
 
     @PostMapping("/add")
     public Kitchen createKitchen(@RequestBody Kitchen kitchen) {
