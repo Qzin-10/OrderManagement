@@ -1,39 +1,42 @@
 package com.Qzin.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 
-import java.time.LocalDateTime;
-
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "menu")
+@Data
 public class Menu {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int itemId;
+    @Column(name = "menu_id")
+    private int menuId;
 
     @ManyToOne
     @JoinColumn(name = "kitchen_id", nullable = false)
-    @JsonIgnoreProperties("menuItems")
     private Kitchen kitchen;
 
-    private String name;
-    private String description;
-    private double price;
-    @Column(name="is_available")
-    private boolean available;
-    private String image_url;
+    @ManyToOne
+    @JoinColumn(name = "inventory_item_id", nullable = false)
+    private Inventory inventory;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private BigDecimal price;
+
+    @Column(name = "is_available", nullable = false)
+    private boolean isAvailable = true;
+
+    @Column(updatable = false)
+    private Timestamp createdAt = new Timestamp(System.currentTimeMillis());
+
+    @PrePersist
+    public void prePersist() {
+        if (this.price == null) {
+            this.price = BigDecimal.ZERO;
+        }
+    }
 }
-

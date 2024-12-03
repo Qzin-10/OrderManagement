@@ -6,15 +6,25 @@ CREATE TABLE kitchen (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE menu (
+CREATE TABLE inventory (
     item_id SERIAL PRIMARY KEY,
-    kitchen_id INT,
-    name VARCHAR(255) NOT NULL,
+    name VARCHAR(100) NOT NULL,
     description TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    is_available BOOLEAN DEFAULT TRUE,
     image_url VARCHAR(255),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (kitchen_id) REFERENCES kitchen(kitchen_id) ON DELETE CASCADE
+    video_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE menu (
+    menu_id SERIAL PRIMARY KEY,
+    kitchen_id INT,
+    inventory_item_id INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    is_available BOOLEAN NOT NULL DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (kitchen_id, inventory_item_id),
+    FOREIGN KEY (kitchen_id) REFERENCES kitchen(kitchen_id),
+    FOREIGN KEY (inventory_item_id) REFERENCES inventory(item_id)
+);
+
 

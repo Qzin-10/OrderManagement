@@ -1,10 +1,13 @@
 package com.Qzin.controller;
 
+
 import com.Qzin.entity.Kitchen;
-import com.Qzin.entity.Menu;
 import com.Qzin.service.KitchenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -12,22 +15,36 @@ import java.util.List;
 @RequestMapping("/api/kitchens")
 public class KitchenController {
 
+    private static final Logger logger = LoggerFactory.getLogger(KitchenController.class);
+
     @Autowired
-    KitchenService kitchenService;
+    private KitchenService kitchenService;
 
     @PostMapping("/add")
-    public Kitchen createKitchen(@RequestBody Kitchen kitchen) {
-        return kitchenService.createKitchen(kitchen);
+    public ResponseEntity<Kitchen> createKitchen(@RequestBody Kitchen kitchen) {
+        logger.info("Received request to create kitchen: {}", kitchen);
+        try {
+            Kitchen newKitchen = kitchenService.createKitchen(kitchen);
+            logger.info("Successfully created kitchen: {}", newKitchen);
+            return ResponseEntity.ok(newKitchen);
+        } catch (Exception e) {
+            logger.error("Error occurred while creating kitchen: {}", kitchen, e);
+            return ResponseEntity.status(500).build();
+        }
     }
 
-    @PostMapping("/{kitchenId}/addmenu")
-    public List<Menu> addMenuItems(@PathVariable int kitchenId, @RequestBody List<Menu> menuItems) {
-        return kitchenService.addMenuItems(kitchenId, menuItems);
-    }
-
-    @GetMapping("/{kitchenId}/menu")
-    public List<Menu> getMenuItems(@PathVariable int kitchenId) {
-        return kitchenService.getMenuItemsByKitchen(kitchenId);
+    @GetMapping("/getAllKitchens")
+    public ResponseEntity<List<Kitchen>> getAllKitchens() {
+        logger.info("Received request to get all kitchens");
+        try {
+            List<Kitchen> kitchens = kitchenService.getAllKitchens();
+            logger.info("Successfully fetched {} kitchens", kitchens.size());
+            return ResponseEntity.ok(kitchens);
+        } catch (Exception e) {
+            logger.error("Error occurred while fetching kitchens", e);
+            return ResponseEntity.status(500).build();
+        }
     }
 }
+
 
