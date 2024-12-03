@@ -36,7 +36,7 @@ public class Menu {
     @PrePersist
     public void prePersist() {
         if (this.price == null) {
-            this.price = BigDecimal.ZERO;
+            this.price = BigDecimal.valueOf(100.00);
         }
     }
 }
