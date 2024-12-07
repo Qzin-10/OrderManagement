@@ -7,10 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 @Slf4j
 public class QzinApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(QzinApplication.class, args);
 		log.info("--------- Starting Qzin Order Management Service ---------");
 	}
-
 }
