@@ -47,6 +47,16 @@ CREATE TABLE kitchen (
                          updated_at TIMESTAMP DEFAULT NOW()         -- Timestamp for when the kitchen is updated
 );
 
+CREATE TABLE discount (
+                          discount_id SERIAL PRIMARY KEY,              -- Auto-incrementing primary key
+                          discount_type VARCHAR(50) NOT NULL,          -- Type of discount (e.g., "Percentage", "Flat Amount")
+                          discount_value DOUBLE PRECISION NOT NULL,    -- Value of the discount (e.g., 20% or 50 units)
+                          is_active BOOLEAN DEFAULT TRUE,              -- Indicates if the discount is currently active
+                          updated_time TIMESTAMP DEFAULT NOW(),        -- Last update time for the discount
+                          minimum_value DOUBLE PRECISION NOT NULL,     -- Minimum value required for discount applicability
+                          created_at TIMESTAMP DEFAULT NOW()           -- Timestamp for when the discount is created
+);
+
 CREATE TABLE menu (
                       menu_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
                       kitchen_id INT UNIQUE NOT NULL,            -- Foreign key reference to kitchen (One-to-One)
@@ -54,6 +64,18 @@ CREATE TABLE menu (
                       created_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the menu is created
                       updated_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the menu is updated
                       FOREIGN KEY (kitchen_id) REFERENCES kitchen(kitchen_id) ON DELETE CASCADE -- Cascade delete
+);
+
+CREATE TABLE itemmeta (
+                          itemmeta_id SERIAL PRIMARY KEY,             -- Auto-incrementing primary key
+                          name VARCHAR(255) NOT NULL,                 -- Name of the item (indexed for faster search)
+                          description TEXT,                           -- Description of the item
+                          image_url TEXT,                             -- URL for the image
+                          video_url TEXT,                             -- URL for the video
+                          veg_status BOOLEAN DEFAULT TRUE,            -- Indicates if the item is vegetarian
+                          category_id INT NOT NULL,                   -- Foreign key to the Category table
+                          created_at TIMESTAMP DEFAULT NOW(),         -- Timestamp for when the metadata is created
+                          updated_at TIMESTAMP DEFAULT NOW()        -- Timestamp for when the metadata is updated
 );
 
 CREATE TABLE item (
@@ -69,29 +91,6 @@ CREATE TABLE item (
                       FOREIGN KEY (itemmeta_id) REFERENCES itemmeta(itemmeta_id) ON DELETE CASCADE, -- Cascade delete for metadata
                       FOREIGN KEY (discount_id) REFERENCES discount(discount_id) ON DELETE SET NULL -- Retain item if discount is deleted
 );
-
-CREATE TABLE itemmeta (
-                          itemmeta_id SERIAL PRIMARY KEY,             -- Auto-incrementing primary key
-                          name VARCHAR(255) NOT NULL,                 -- Name of the item (indexed for faster search)
-                          description TEXT,                           -- Description of the item
-                          image_url TEXT,                             -- URL for the image
-                          video_url TEXT,                             -- URL for the video
-                          veg_status BOOLEAN DEFAULT TRUE,            -- Indicates if the item is vegetarian
-                          category_id INT NOT NULL,                   -- Foreign key to the Category table
-                          created_at TIMESTAMP DEFAULT NOW(),         -- Timestamp for when the metadata is created
-                          updated_at TIMESTAMP DEFAULT NOW(),         -- Timestamp for when the metadata is updated
-);
-
-CREATE TABLE discount (
-                          discount_id SERIAL PRIMARY KEY,              -- Auto-incrementing primary key
-                          discount_type VARCHAR(50) NOT NULL,          -- Type of discount (e.g., "Percentage", "Flat Amount")
-                          discount_value DOUBLE PRECISION NOT NULL,    -- Value of the discount (e.g., 20% or 50 units)
-                          is_active BOOLEAN DEFAULT TRUE,              -- Indicates if the discount is currently active
-                          updated_time TIMESTAMP DEFAULT NOW(),        -- Last update time for the discount
-                          minimum_value DOUBLE PRECISION NOT NULL,     -- Minimum value required for discount applicability
-                          created_at TIMESTAMP DEFAULT NOW()           -- Timestamp for when the discount is created
-);
-
 
 CREATE TABLE cart (
                       cart_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
