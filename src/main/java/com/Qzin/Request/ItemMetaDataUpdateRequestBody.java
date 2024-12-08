@@ -1,0 +1,24 @@
+package com.Qzin.Request;
+
+
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+
+@Data
+public class ItemMetaDataUpdateRequestBody {
+
+    private String name;
+
+    private String description;
+
+    private String imageUrl;
+
+    private String videoUrl;
+
+    private boolean vegStatus;
+
+    private String category;
+
+    @NotNull(message = "ItemMetaDataUUID should not be null")
+    private String ItemMetaDataUUID;
+}

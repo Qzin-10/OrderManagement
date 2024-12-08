@@ -32,7 +32,4 @@ public class ItemController {
     public Item updateItem(@RequestBody ItemUpdateBody itemUpdateBody) {
         return itemService.updateItem(itemUpdateBody);
     }
-
-
-
 }

@@ -25,6 +25,7 @@ public class Menu {
     @JoinColumn(name = "kitchen_id", nullable = false)
     private Kitchen kitchen;
 
+    @OneToMany
     private List<Item> itemsList;
 
     @Column(updatable = false)

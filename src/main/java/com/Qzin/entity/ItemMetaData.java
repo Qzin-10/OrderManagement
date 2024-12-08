@@ -1,8 +1,10 @@
 package com.Qzin.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.UUID;
@@ -11,6 +13,8 @@ import java.util.UUID;
 @Data
 @Builder
 @Table(name = "itemmeta")
+@AllArgsConstructor
+@NoArgsConstructor
 public class ItemMetaData {
 
     @Id
@@ -44,10 +48,6 @@ public class ItemMetaData {
 
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt = new Date();
-
-    public ItemMetaData() {
-
-    }
 
     @PrePersist
     public void updateCreatedAt() {

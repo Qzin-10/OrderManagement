@@ -14,5 +14,5 @@ public interface ItemRepository extends JpaRepository<Item, Integer> {
     @Query("SELECT i FROM Item i WHERE i.itemUUID=:itemUUID")
     Optional<Item> getItemByUUID(@Param("itemUUID") String itemUUID);
 
-    void deleteItemByUUID(String itemUUID);
+    void deleteItemByItemUUID(String itemUUID);
 }

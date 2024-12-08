@@ -54,7 +54,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItem(String itemUUID) {
-         itemRepository.deleteItemByUUID(itemUUID);
+         itemRepository.deleteItemByItemUUID(itemUUID);
     }
 
     @Override
