@@ -39,7 +39,7 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> getMenuForKitchen(int kitchenId) {
         Optional<Kitchen> kitchenOptional = kitchenRepository.findById(kitchenId);
         if (kitchenOptional.isPresent()) {
-            return menuRepository.findByKitchen(kitchenOptional.get());
+            return menuRepository.findAllByKitchen_KitchenId(kitchenOptional.get().getKitchenId());
         }
         return new ArrayList<>();
     }

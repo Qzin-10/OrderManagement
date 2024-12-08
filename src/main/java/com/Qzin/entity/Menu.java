@@ -4,6 +4,8 @@ package com.Qzin.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
+
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
@@ -11,6 +13,7 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(name="menu")
 public class Menu {
 
     @Id
@@ -25,7 +28,7 @@ public class Menu {
     @JoinColumn(name = "kitchen_id", nullable = false)
     private Kitchen kitchen;
 
-    @OneToMany
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     private List<Item> itemsList;
 
     @Column(updatable = false)

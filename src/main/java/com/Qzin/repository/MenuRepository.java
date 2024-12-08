@@ -15,7 +15,6 @@ public interface MenuRepository extends JpaRepository<Menu, Integer> {
     @Query("SELECT m FROM Menu m WHERE m.menuUUID=:menuUUID")
     Optional<Menu> getMenuByUUID(@Param("menuUUID") String menuUUID);
 
-    List<Menu> findAllByKitchen_KitchenId(int kitchenId);
+    List<Menu> findAllByKitchen_KitchenId(Long kitchenId);
 
-    List<Menu> findByKitchen(Kitchen kitchen);
 }

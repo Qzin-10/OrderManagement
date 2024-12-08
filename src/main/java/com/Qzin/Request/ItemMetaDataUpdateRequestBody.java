@@ -7,6 +7,9 @@ import lombok.Data;
 @Data
 public class ItemMetaDataUpdateRequestBody {
 
+    @NotNull(message = "ItemMetaDataUUID should not be null")
+    private String itemMetaDataUUID;
+
     private String name;
 
     private String description;
@@ -19,6 +22,4 @@ public class ItemMetaDataUpdateRequestBody {
 
     private String category;
 
-    @NotNull(message = "ItemMetaDataUUID should not be null")
-    private String ItemMetaDataUUID;
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ItemMetaServiceImpl implements ItemMetaService {
@@ -29,6 +30,7 @@ public class ItemMetaServiceImpl implements ItemMetaService {
                 .imageURL(itemMetaRequestBody.getImageUrl())
                 .videoURL(itemMetaRequestBody.getVideoUrl())
                 .description(itemMetaRequestBody.getDescription())
+                .itemMetaDataUUID(String.valueOf(UUID.randomUUID()))
                 .build();
 
         itemMetaDataRepository.save(itemMetaData);

@@ -27,9 +27,8 @@ CREATE TABLE address (
 
 CREATE TABLE kitchen (
                          kitchen_id SERIAL PRIMARY KEY,             -- Auto-incrementing primary key
-                         kitchen_uuid UUID DEFAULT gen_random_uuid(), -- Unique UUID for each kitchen
+                         kitchen_uuid VARCHAR(50) NOT NULL , -- Unique UUID for each kitchen
                          name VARCHAR(255) NOT NULL,                -- General name
-                         kitchen_name VARCHAR(255) NOT NULL,        -- Specific kitchen name
                          address TEXT,                              -- Full address
                          city VARCHAR(100),                         -- City
                          state VARCHAR(100),                        -- State
@@ -39,7 +38,6 @@ CREATE TABLE kitchen (
                          longitude DOUBLE PRECISION,                -- Longitude for geolocation
                          contact_number VARCHAR(15),                -- Contact number
                          email VARCHAR(255),                        -- Email address
-                         operational_hours TEXT[],                  -- List of operational hours (PostgreSQL array)
                          is_active BOOLEAN DEFAULT TRUE,            -- Indicates if the kitchen is active
                          manager_name VARCHAR(255),                 -- Manager's name
                          manager_contact VARCHAR(15),               -- Manager's contact number
@@ -61,7 +59,6 @@ CREATE TABLE menu (
                       menu_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
                       menu_uuid VARCHAR(255) NOT NULL, -- Unique UUID for each kitchen
                       kitchen_id INT UNIQUE NOT NULL,            -- Foreign key reference to kitchen (One-to-One)
-                      menu_name VARCHAR(255) NOT NULL,           -- Name of the menu
                       created_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the menu is created
                       updated_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the menu is updated
                       FOREIGN KEY (kitchen_id) REFERENCES kitchen(kitchen_id) ON DELETE CASCADE -- Cascade delete
@@ -82,7 +79,7 @@ CREATE TABLE itemmeta (
 
 CREATE TABLE item (
                       item_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
-                      item_uuid UUID DEFAULT gen_random_uuid(),  -- Unique UUID for the item
+                      item_uuid VARCHAR(100) NOT NULL ,  -- Unique UUID for the item
                       itemmeta_id INT NOT NULL,                  -- Foreign key reference to ItemMeta
                       price DOUBLE PRECISION NOT NULL,           -- Price of the item
                       is_available BOOLEAN DEFAULT TRUE,         -- Indicates if the item is available

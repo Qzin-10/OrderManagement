@@ -39,9 +39,9 @@ public class ItemServiceImpl implements ItemService {
 
             if(itemMetaData.isPresent() && menu.isPresent()) {
                 Item item = Item.builder().servingQuantity(itemRequestBody.getServingQuantity())
-                        .itemMetaId(itemMetaData.get().getItemMetaDataId())
+                        .itemMeta(itemMetaData.get())
                         .price(itemRequestBody.getPrice())
-                        .menuUUID(itemRequestBody.getMenuUUID())
+                        .menu(menu.get())
                         .build();
 
                 return item;
@@ -71,7 +71,7 @@ public class ItemServiceImpl implements ItemService {
                         .isAvailable(itemUpdateBody.isAvailable());
 
                 Optional<ItemMetaData> itemMetaData=itemMetaDataRepository.findById(itemUpdateBody.getItemmetaId());
-                itemMetaData.ifPresent(metaData -> itemBuilder.itemMetaId(metaData.getItemMetaDataId()));
+                itemMetaData.ifPresent(itemBuilder::itemMeta);
                 Item updatedItem = itemBuilder.build();
                 itemRepository.save(updatedItem);
                 return updatedItem;

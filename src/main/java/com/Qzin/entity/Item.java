@@ -22,14 +22,16 @@ public class Item {
     @Column(name = "item_id")
     private int itemId;
 
-    @Column(name = "item_uuid", nullable = false)
+    @Column(name = "item_uuid", nullable = false, unique = true)
     private String itemUUID = String.valueOf(UUID.randomUUID());
 
-    @Column(name = "itemmeta_id", nullable = false)
-    private int itemMetaId;
+    @ManyToOne
+    @JoinColumn(name = "itemmeta_id", nullable = false)
+    private ItemMetaData itemMeta;
 
-    @Column(name = "menu_id", nullable = false)
-    private String menuUUID;
+    @ManyToOne
+    @JoinColumn(name = "menu_id", nullable = false, unique = true)
+    private Menu menu;
 
     @Column(name = "price", nullable = false)
     private double price;
@@ -40,8 +42,9 @@ public class Item {
     @Column(name = "serving_quantity", nullable = false)
     private String servingQuantity;
 
-    @Column(name = "discount_id", nullable = false)
-    private int discountId;
+    @ManyToOne
+    @JoinColumn(name = "discount_id")
+    private Discount discount;
 
     @Column(name = "created_at", nullable = false)
     private Date createdAt;
@@ -56,4 +59,8 @@ public class Item {
         }
     }
 
+    @PreUpdate
+    public void updateUpdatedAt() {
+        this.updatedAt = new Date();
+    }
 }
