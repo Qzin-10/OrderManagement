@@ -29,7 +29,6 @@ public class MenuServiceImpl implements MenuService {
 
         if (kitchenOptional.isPresent()) {
             Kitchen kitchen = kitchenOptional.get();
-
             Menu menu = new Menu();
             menu.setKitchen(kitchen);
             return menuRepository.save(menu);

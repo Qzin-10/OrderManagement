@@ -45,6 +45,10 @@ public class Item {
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt = new Date();
 
+    public Item() {
+
+    }
+
     @PrePersist
     public void updateCreatedAt() {
         if(this.createdAt == null) {
