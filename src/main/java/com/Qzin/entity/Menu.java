@@ -2,6 +2,7 @@ package com.Qzin.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
@@ -28,7 +29,8 @@ public class Menu {
     @JoinColumn(name = "kitchen_id", nullable = false)
     private Kitchen kitchen;
 
-    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Item> itemsList;
 
     @Column(updatable = false)

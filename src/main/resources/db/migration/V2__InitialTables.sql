@@ -80,7 +80,8 @@ CREATE TABLE itemmeta (
 CREATE TABLE item (
                       item_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
                       item_uuid VARCHAR(100) NOT NULL ,  -- Unique UUID for the item
-                      itemmeta_id INT NOT NULL,                  -- Foreign key reference to ItemMeta
+                      itemmeta_id INT NOT NULL,
+                      menu_id INT NOT NULL , -- Foreign key reference to ItemMeta
                       price DOUBLE PRECISION NOT NULL,           -- Price of the item
                       is_available BOOLEAN DEFAULT TRUE,         -- Indicates if the item is available
                       serving_quantity VARCHAR(100) NOT NULL,    -- Serving quantity (e.g., "1 Plate", "500 ml")
@@ -88,7 +89,8 @@ CREATE TABLE item (
                       created_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the item is created
                       updated_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the item is updated
                       FOREIGN KEY (itemmeta_id) REFERENCES itemmeta(itemmeta_id) ON DELETE CASCADE, -- Cascade delete for metadata
-                      FOREIGN KEY (discount_id) REFERENCES discount(discount_id) ON DELETE SET NULL -- Retain item if discount is deleted
+                      FOREIGN KEY (discount_id) REFERENCES discount(discount_id) ON DELETE SET NULL,
+                      FOREIGN KEY (menu_id) REFERENCES menu(menu_id)
 );
 
 CREATE TABLE cart (

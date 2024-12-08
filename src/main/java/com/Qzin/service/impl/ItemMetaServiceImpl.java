@@ -58,7 +58,7 @@ public class ItemMetaServiceImpl implements ItemMetaService {
             Optional.ofNullable(itemMetaDataUpdateRequestBody.getName()).ifPresent(itemMetaData :: setName);
             Optional.ofNullable(itemMetaDataUpdateRequestBody.getImageUrl()).ifPresent(itemMetaData :: setImageURL);
             Optional.ofNullable(itemMetaDataUpdateRequestBody.getVideoUrl()).ifPresent(itemMetaData :: setVideoURL);
-            Optional.ofNullable(itemMetaDataUpdateRequestBody.isVegStatus()).ifPresent(itemMetaData :: setVegStatus);
+            Optional.of(itemMetaDataUpdateRequestBody.isVegStatus()).ifPresent(itemMetaData :: setVegStatus);
             itemMetaData.setUpdatedAt(new Date());
             itemMetaDataRepository.save(itemMetaData);
         }

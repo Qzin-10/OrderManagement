@@ -10,12 +10,17 @@ import com.Qzin.repository.ItemRepository;
 import com.Qzin.repository.MenuRepository;
 import com.Qzin.service.ItemService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Transient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ItemServiceImpl implements ItemService {
@@ -42,7 +47,13 @@ public class ItemServiceImpl implements ItemService {
                         .itemMeta(itemMetaData.get())
                         .price(itemRequestBody.getPrice())
                         .menu(menu.get())
+                        .createdAt(new Date())
+                        .updatedAt(new Date())
+                        .isAvailable(true)
+                        .itemUUID(String.valueOf(UUID.randomUUID()))
                         .build();
+
+                itemRepository.save(item);
 
                 return item;
             }
@@ -52,35 +63,43 @@ public class ItemServiceImpl implements ItemService {
         return null;
     }
 
+    @Transactional
     @Override
     public void deleteItem(String itemUUID) {
-         itemRepository.deleteItemByItemUUID(itemUUID);
+         itemRepository.deleteByItemUUID(itemUUID);
     }
 
     @Override
     public Item updateItem(ItemUpdateBody itemUpdateBody) {
         String itemUUID = itemUpdateBody.getItemUUID();
 
-        if (itemUUID != null) {
-            Optional<Item> itemOptional = itemRepository.getItemByUUID(itemUUID);
-
-            if (itemOptional.isPresent()) {
-                Item.ItemBuilder itemBuilder = Item.builder()
-                        .servingQuantity(itemUpdateBody.getServingQuantity())
-                        .price(itemUpdateBody.getPrice())
-                        .isAvailable(itemUpdateBody.isAvailable());
-
-                Optional<ItemMetaData> itemMetaData=itemMetaDataRepository.findById(itemUpdateBody.getItemmetaId());
-                itemMetaData.ifPresent(itemBuilder::itemMeta);
-                Item updatedItem = itemBuilder.build();
-                itemRepository.save(updatedItem);
-                return updatedItem;
-            } else {
-                throw new EntityNotFoundException("Item not found with UUID: " + itemUUID);
-            }
-        } else {
+        if (itemUUID == null) {
             throw new IllegalArgumentException("Item UUID cannot be null");
         }
+
+        Item item = itemRepository.getItemByUUID(itemUUID)
+                .orElseThrow(() -> new EntityNotFoundException("Item not found with UUID: " + itemUUID));
+
+        Optional.ofNullable(itemUpdateBody.getServingQuantity())
+                .ifPresent(item::setServingQuantity);
+
+        Optional.ofNullable(itemUpdateBody.getPrice())
+                .filter(price -> price != 0)
+                .ifPresent(item::setPrice);
+
+        Optional.ofNullable(itemUpdateBody.isServing())
+                .ifPresent(item::setAvailable);
+
+        if (itemUpdateBody.getItemmetaId() > 0) {
+            itemMetaDataRepository.findById(itemUpdateBody.getItemmetaId())
+                    .ifPresent(item::setItemMeta);
+        }
+
+        itemRepository.save(item);
+
+        return item;
     }
+
+
 
 }

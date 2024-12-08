@@ -1,5 +1,7 @@
 package com.Qzin.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "item")
-@Builder
+@Builder(toBuilder = true)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Item {
@@ -30,6 +32,8 @@ public class Item {
     private ItemMetaData itemMeta;
 
     @ManyToOne
+    @JsonBackReference
+    @JsonIgnoreProperties("itemsList")
     @JoinColumn(name = "menu_id", nullable = false, unique = true)
     private Menu menu;
 
@@ -56,6 +60,9 @@ public class Item {
     public void updateCreatedAt() {
         if(this.createdAt == null) {
             createdAt = new Date();
+        }
+        if (this.itemUUID == null) {
+            this.itemUUID = UUID.randomUUID().toString();
         }
     }
 
