@@ -59,6 +59,7 @@ CREATE TABLE discount (
 
 CREATE TABLE menu (
                       menu_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
+                      menu_uuid VARCHAR(255) NOT NULL, -- Unique UUID for each kitchen
                       kitchen_id INT UNIQUE NOT NULL,            -- Foreign key reference to kitchen (One-to-One)
                       menu_name VARCHAR(255) NOT NULL,           -- Name of the menu
                       created_at TIMESTAMP DEFAULT NOW(),        -- Timestamp for when the menu is created
@@ -68,12 +69,13 @@ CREATE TABLE menu (
 
 CREATE TABLE itemmeta (
                           itemmeta_id SERIAL PRIMARY KEY,             -- Auto-incrementing primary key
+                          itemmeta_uuid VARCHAR(255) NOT NULL,
                           name VARCHAR(255) NOT NULL,                 -- Name of the item (indexed for faster search)
                           description TEXT,                           -- Description of the item
                           image_url TEXT,                             -- URL for the image
                           video_url TEXT,                             -- URL for the video
                           veg_status BOOLEAN DEFAULT TRUE,            -- Indicates if the item is vegetarian
-                          category_id INT NOT NULL,                   -- Foreign key to the Category table
+                          category TEXT NOT NULL,                   -- Foreign key to the Category table
                           created_at TIMESTAMP DEFAULT NOW(),         -- Timestamp for when the metadata is created
                           updated_at TIMESTAMP DEFAULT NOW()        -- Timestamp for when the metadata is updated
 );

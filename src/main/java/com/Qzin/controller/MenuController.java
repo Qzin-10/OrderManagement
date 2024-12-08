@@ -21,19 +21,18 @@ public class MenuController {
     private MenuService menuService;
 
     @PostMapping("/add")
-    public ResponseEntity<Menu> addMenuItem(@RequestParam int kitchenId,
-                                            @RequestParam int inventoryItemId,
-                                            @RequestParam BigDecimal price) {
-        logger.info("Received request to add menu item with kitchenId: {}, inventoryItemId: {}, price: {}", kitchenId, inventoryItemId, price);
+    public ResponseEntity<Menu> addMenuItem(@RequestParam int kitchenId) {
+        logger.info("Received request to add menu item with kitchenId: {}, inventoryItemId: {}, price: {}", kitchenId);
         try {
-            Menu newMenuItem = menuService.addMenuItem(kitchenId, inventoryItemId, price);
+            Menu newMenuItem = menuService.addMenuItem(kitchenId);
             logger.info("Successfully added new menu item: {}", newMenuItem);
             return ResponseEntity.ok(newMenuItem);
         } catch (Exception e) {
-            logger.error("Error occurred while adding menu item with kitchenId: {}, inventoryItemId: {}", kitchenId, inventoryItemId, e);
+            logger.error("Error occurred while adding menu item with kitchenId: {}, inventoryItemId: {}", kitchenId, e);
             return ResponseEntity.status(500).build();
         }
     }
+
 
     @GetMapping("/{kitchenId}")
     public ResponseEntity<List<Menu>> getMenuForKitchen(@PathVariable int kitchenId) {

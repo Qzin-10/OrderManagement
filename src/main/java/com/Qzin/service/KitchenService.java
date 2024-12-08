@@ -9,4 +9,7 @@ public interface KitchenService  {
     Kitchen createKitchen(Kitchen kitchen);
 
     List<Kitchen> getAllKitchens();
+
+    interface ItemService {
+    }
 }

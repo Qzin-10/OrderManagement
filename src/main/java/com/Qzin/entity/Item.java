@@ -1,0 +1,55 @@
+package com.Qzin.entity;
+
+import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.Data;
+
+import java.util.Date;
+import java.util.UUID;
+
+@Entity
+@Data
+@Table(name = "item")
+@Builder
+public class Item {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "item_id")
+    private int itemId;
+
+    @Column(name = "item_uuid", nullable = false)
+    private String itemUUID = String.valueOf(UUID.randomUUID());
+
+    @Column(name = "itemmeta_id", nullable = false)
+    private int itemMetaId;
+
+    @Column(name = "menu_id", nullable = false)
+    private String menuUUID;
+
+    @Column(name = "price", nullable = false)
+    private double price;
+
+    @Column(name = "is_available", nullable = false)
+    private boolean isAvailable;
+
+    @Column(name = "serving_quantity", nullable = false)
+    private String servingQuantity;
+
+    @Column(name = "discount_id", nullable = false)
+    private int discountId;
+
+    @Column(name = "created_at", nullable = false)
+    private Date createdAt;
+
+    @Column(name = "updated_at", nullable = false)
+    private Date updatedAt = new Date();
+
+    @PrePersist
+    public void updateCreatedAt() {
+        if(this.createdAt == null) {
+            createdAt = new Date();
+        }
+    }
+
+}

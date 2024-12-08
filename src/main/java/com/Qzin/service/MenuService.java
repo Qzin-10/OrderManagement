@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface MenuService {
 
-    Menu addMenuItem(int kitchenId, int inventoryItemId, BigDecimal price);
+    Menu addMenuItem(int kitchenId);
 
     List<Menu> getMenuForKitchen(int kitchenId);
 }

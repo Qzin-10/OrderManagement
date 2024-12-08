@@ -1,10 +1,8 @@
 package com.Qzin.service.impl;
 
 
-import com.Qzin.entity.Inventory;
 import com.Qzin.entity.Kitchen;
 import com.Qzin.entity.Menu;
-import com.Qzin.repository.InventoryRepository;
 import com.Qzin.repository.KitchenRepository;
 import com.Qzin.repository.MenuRepository;
 import com.Qzin.service.MenuService;
@@ -24,23 +22,16 @@ public class MenuServiceImpl implements MenuService {
     private KitchenRepository kitchenRepository;
 
     @Autowired
-    private InventoryRepository inventoryRepository;
-
-    @Autowired
     private MenuRepository menuRepository;
 
-    public Menu addMenuItem(int kitchenId, int inventoryItemId, BigDecimal price){
+    public Menu addMenuItem(int kitchenId){
         Optional<Kitchen> kitchenOptional = kitchenRepository.findById(kitchenId);
-        Optional<Inventory> inventoryOptional = inventoryRepository.findById(inventoryItemId);
 
-        if (kitchenOptional.isPresent() && inventoryOptional.isPresent()) {
+        if (kitchenOptional.isPresent()) {
             Kitchen kitchen = kitchenOptional.get();
-            Inventory inventory = inventoryOptional.get();
 
             Menu menu = new Menu();
             menu.setKitchen(kitchen);
-            menu.setInventory(inventory);
-            menu.setPrice(price);
             return menuRepository.save(menu);
         }
         return null;
