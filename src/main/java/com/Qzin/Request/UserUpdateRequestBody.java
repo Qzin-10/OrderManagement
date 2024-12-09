@@ -17,6 +17,4 @@ public class UserUpdateRequestBody {
     private String email;
     private String contactNumber;
     private Boolean isActive;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 }

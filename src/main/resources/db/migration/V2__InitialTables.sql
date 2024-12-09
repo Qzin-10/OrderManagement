@@ -1,6 +1,6 @@
 CREATE TABLE users (
                        user_id SERIAL PRIMARY KEY,                -- Auto-incrementing primary key
-                       user_uuid UUID DEFAULT gen_random_uuid(),  -- Generates a unique UUID
+                       user_uuid VARCHAR(255) NOT NULL ,  -- Generates a unique UUID
                        username VARCHAR(255) NOT NULL,            -- Username field
                        email VARCHAR(255) UNIQUE NOT NULL,        -- Email field, must be unique
                        contact_number VARCHAR(15),                -- Contact number
